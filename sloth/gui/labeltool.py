@@ -138,6 +138,10 @@ class MainWindow(QMainWindow):
         w = img.shape[1]
         self.image_resolution.setText("%dx%d" % (w, h))
 
+        image_index =  new_image.index().row() + 1
+        num_image = self.labeltool.model().root().numFiles()
+        self.image_index.setText("%d/%d" % (image_index, num_image))
+
         # TODO: This info should be obtained from AnnotationModel or LabelTool
         if isinstance(new_image, FrameModelItem):
             self.controls.setFrameNumAndTimestamp(new_image.framenum(), new_image.timestamp())
@@ -275,6 +279,10 @@ class MainWindow(QMainWindow):
 
         self.scene.selectionChanged.connect(self.scene.onSelectionChanged)
         self.treeview.selectedItemsChanged.connect(self.scene.onSelectionChangedInTreeView)
+
+        self.image_index = QLabel("0/0")
+        self.image_index.setFrameStyle(QFrame.StyledPanel)
+        self.statusBar().addPermanentWidget(self.image_index)
 
         self.posinfo = QLabel("-1, -1")
         self.posinfo.setFrameStyle(QFrame.StyledPanel)
